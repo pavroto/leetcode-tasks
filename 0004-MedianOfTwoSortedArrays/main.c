@@ -31,29 +31,23 @@ double findMedianSortedArrays(int *nums1, int nums1Size, int *nums2,
 
   while (n < nums1Size || m < nums2Size) {
 
-    if (n_break || m_break) {
-      if (n_break) {
-        cur = nums2[m++];
-        if (m >= nums2Size)
-          m_break = 1;
-      } else {
-        cur = nums1[n++];
-        if (n >= nums1Size)
-          n_break = 1;
-      }
-    } else if (nums1[n] > nums2[m]) {
+    if (n_break) 
       cur = nums2[m++];
-      if (m >= nums2Size)
-        m_break = 1;
-    } else {
+    else if (m_break)
       cur = nums1[n++];
-      if (n >= nums1Size)
-        n_break = 1;
-    }
+    else if (nums1[n] > nums2[m])
+      cur = nums2[m++];
+    else
+      cur = nums1[n++];
+
+    if (n >= nums1Size)
+      n_break = 1;
+    if (m >= nums2Size)
+      m_break = 1;
 
     if ((n + m) == (int)((nums1Size + nums2Size) / 2 + 1)) {
       if (is_odd) {
-        return (double) cur;
+        return (double)cur;
       } else {
         return ((double)cur + (double)buf) / 2.0;
       }
@@ -63,7 +57,6 @@ double findMedianSortedArrays(int *nums1, int nums1Size, int *nums2,
       break;
 
     buf = cur;
-
   }
 
   return INT_MIN;
